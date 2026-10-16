@@ -13,20 +13,6 @@ The project combines multilingual BERT classification, LDA topic modeling, Itali
 - How do these patterns change over time and across parliamentary party families?
 - Can generated summaries help contextualize the quantitative findings?
 
-## Repository contents
-
-| File | Purpose |
-| --- | --- |
-| [Data_preparation_nlp_final.ipynb](Data_preparation_nlp_final.ipynb) | Corpus loading, cleaning, language-specific sentence segmentation, keyword filtering, and parliamentary speech selection. |
-| [nlp_project_BERT_classification.ipynb](nlp_project_BERT_classification.ipynb) | Manifesto training-data preparation, multilingual BERT fine-tuning, stance prediction, temporal comparisons, and human-label validation. |
-| [nlp_project_LDA.ipynb](nlp_project_LDA.ipynb) | Four LDA analyses, topic selection, coherence and diversity evaluation, group comparisons, and optional manual validation. |
-| [Translation_Summary_nlp_final.ipynb](Translation_Summary_nlp_final.ipynb) | Translation of parliamentary speeches and hierarchical summaries by topic, source, party family, and year. |
-| [scripts/Manifesto_dataset_extraction_v1.2.R](scripts/Manifesto_dataset_extraction_v1.2.R) | Extraction of relevant annotated policy statements from the Manifesto Project data. |
-| [reports/project_report_ID_06.pdf](reports/project_report_ID_06.pdf) | Research report with methodology, results, figures, and references. |
-| [data/validation/all_labeled_samples.xlsx](data/validation/all_labeled_samples.xlsx) | Original 100-observation BERT validation sample with predictions and human labels. |
-| [DATA_SOURCES.md](DATA_SOURCES.md) | Data provenance, required inputs, and generated intermediate files. |
-| [PUBLICATION_NOTES.md](PUBLICATION_NOTES.md) | Corrections, validation performed, and remaining reproducibility limitations. |
-
 ## Approach
 
 ### 1. Data preparation
@@ -76,60 +62,5 @@ The corrected report tables correspond to these original LDA outputs:
 | Military — UN | 4 | 0.457 | 0.667 |
 
 The report records the original experiments. The publication notebooks contain execution repairs and cleared outputs; the complete pipeline has not been rerun after these repairs, so the tables above are not new benchmark results.
-
-## Running the project
-
-### Environment
-
-Use a Python 3.11 environment with Jupyter, or a Colab runtime configured with equivalent dependencies. Run notebooks with the **repository root as the working directory**, or set `NLP_PROJECT_ROOT` to its absolute path before running the configuration cell.
-
-```bash
-python -m venv .venv
-# Activate the environment using the command appropriate for your operating system.
-python -m pip install -r requirements.txt
-python -m spacy download it_core_news_sm
-python -m spacy download en_core_web_sm
-jupyter lab
-```
-
-The requirements provide a starting environment with compatible version constraints; a fully executed environment lockfile is not supplied. A GPU is strongly advisable for BERT training, translation, and summarization. Model downloads require internet access.
-
-For optional Manifesto extraction, install the R packages `dplyr`, `readxl`, and `openxlsx`, place the source files in `data/raw/`, and run from the repository root:
-
-```bash
-Rscript scripts/Manifesto_dataset_extraction_v1.2.R
-```
-
-### Data and execution order
-
-1. Obtain the raw inputs described in [DATA_SOURCES.md](DATA_SOURCES.md). The large parliamentary corpus and Manifesto training extract are external inputs.
-2. Run `Data_preparation_nlp_final.ipynb` to generate the four topic-specific input files in `data/processed/`.
-3. Run `nlp_project_BERT_classification.ipynb` for classification. Either fine-tune from the supplied training-data format or load the complete saved fine-tuned model as explained in the notebook.
-4. Run `nlp_project_LDA.ipynb` for topic modeling. This branch does not require BERT predictions. Manual validation requires four additional completed annotation workbooks and is disabled by default.
-5. Run `Translation_Summary_nlp_final.ipynb` for the translation and summarization branch, which also starts from the data-preparation outputs.
-
-The path configuration cell in every notebook separates raw inputs, processed data, validation files, model weights, and generated outputs. Drive mounts and personal Google Drive links are not required.
-
-## Fine-tuned model
-
-The trained BERT weights are **not bundled** with this repository. They can be distributed separately through a Hugging Face model repository; no public checkpoint URL is currently supplied.
-
-For local inference, place the complete saved model directory at:
-
-`models/final_bert_model3_balanced_data/`
-
-Include the model weights, `config.json`, all tokenizer files saved by `tokenizer.save_pretrained`, and `best_threshold.json`. Follow the inference-only instructions in the BERT notebook. The original base BERT checkpoint alone does not reproduce the fine-tuned classifier.
-
-See [models/README.md](models/README.md) for packaging details. Model weights, training checkpoints, raw data, and generated intermediate files are excluded from ordinary commits through `.gitignore`.
-
-## Limitations
-
-- The fine-tuning data differs from the downstream speeches in genre and institutional context.
-- Italian and negative training examples are less numerous than English and positive examples.
-- Keyword filtering may retain ambiguous passages and miss relevant texts without the chosen keywords.
-- UN coverage is limited, and the corpora use different languages and document units.
-- Human validation uses small samples and a single annotator.
-- Hierarchical summarization may lose minority positions and discourse structure. No gold-standard summary evaluation is available.
-- Raw corpora, completed LDA annotation workbooks, and trained weights are not bundled; full reproduction requires those inputs and a new execution.
 
 Data sources and pretrained models retain their respective attribution and reuse conditions. See the report for the full bibliography.
