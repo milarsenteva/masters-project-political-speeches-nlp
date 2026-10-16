@@ -6,6 +6,14 @@ The project combines multilingual BERT classification, LDA topic modeling, Itali
 
 **Authors:** Milana Arsenteva, Anna Ciapparelli, Sara Pulidori, and Lia Yuan.
 
+## My Contribution
+
+I was responsible for the complete BERT classification component, including preparing the supervised fine-tuning dataset, fine-tuning multilingual BERT, evaluating model performance, and applying the classifier to parliamentary and UN speeches.
+
+I also analyzed differences in predicted policy stance across datasets and time periods and compared model predictions with human annotations.
+
+Beyond the classification component, I contributed to the background research, interpretation of the findings, and writing of the final project report.
+
 ## Research questions
 
 - How does predicted policy stance differ between the Italian Parliament and Italy's UN speeches?
