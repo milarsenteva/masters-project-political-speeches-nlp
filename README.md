@@ -12,7 +12,7 @@ I was responsible for the complete BERT classification component, including prep
 
 I also analyzed differences in predicted policy stance across datasets and time periods and compared model predictions with human annotations.
 
-Beyond the classification component, I contributed to the background research, interpretation of the findings, and writing of the final project report.
+Beyond the classification component, I also contributed to the translation and generative summarization pipeline, using pretrained transformer models from Hugging Face: MarianMT for Italian-to-English translation and BART for hierarchical summarization of political speeches.
 
 ## Research questions
 
